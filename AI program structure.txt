@@ -1,0 +1,23 @@
+AI program structure:
+
+Data Module: module for working with various data that is available to AI
+	Communcations Class: communicates with server
+		-> recieves movement results from data store, and retrieves next move data from 
+		   data store
+	Data Store: stores map data, movement history, results ect
+		-> take data from communications other classes and store it, and provide next
+		   move on request
+
+Decision Module:
+	prediction class: predict future events (map changes, other actors' movements, ect)
+		-> takes data from data store and makes predictions, sends predictions to data store
+	evaluation class: evaluate possible movements
+		-> take data from data store and evaluate moves, save move result predictions
+		   and next move in data store
+	
+
+Training Module:
+	results class: deterimine result of actions
+		-> take data from data store and identify success or failure of actions, return results to data store
+	modification class: modify AI parameters based on results
+		-> take results from data store and modify some evaluation and prediction class parameters	 

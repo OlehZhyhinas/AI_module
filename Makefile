@@ -1,4 +1,4 @@
-CC=g++
+CC=g++ -std=c++11
 CCFLAGS=-std=c++11
 LDFLAGS=
 SOURCES=$(wildcard *.cpp)

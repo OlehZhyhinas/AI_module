@@ -39,9 +39,9 @@ void Evaluation::next_move(){
 	}
 	
 	range=max-min;
-	
-	shortest_path();
 	direction=UP;
+	shortest_path();
+	
 	
 	
 	if (d->location_values[0]>0){
@@ -57,12 +57,12 @@ void Evaluation::next_move(){
 		probabilities[DOWN]=range+d->location_attractivness[d->location_values[0]][d->location_values[1]+1];
 	}
 	
-
+	
 	probabilities[direction]=range+max;
 	
 	range=probabilities[0]+probabilities[1]+probabilities[2]+probabilities[3];
-	
-	selection = rand() % (int)range;
+	int size=(int)range +1;
+	selection = rand() %size;
 	
 	
 	if (selection<probabilities[UP]){

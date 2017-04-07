@@ -135,8 +135,8 @@ void Data_Store::initialize_map(){
 	for (int x=0; x<x_max; x++){
 		map.push_back(std::vector<char> (y_max, kEmpty));
 	}
-	map[location_values[0]][location_values[1]]=kSelf;
-	map[destination_values[0]][destination_values[1]]=kDestination;
+	//map[location_values[0]][location_values[1]]=kSelf;
+	//map[destination_values[0]][destination_values[1]]=kDestination;
 	
 	//print_map();
 }
@@ -185,8 +185,11 @@ void Data_Store::print_points_values(){
 }
 
 void Data_Store::print_map(){
+	
+	//printf ("x: %d, y: %d ", location_values[0], location_values[1]);
 	for (int y=0; y<size_y; y++){
 		for (int x=0; x<size_x; x++){
+			
 			if (x!=location_values[0] || y!=location_values[1]){
 				printf("%c ",map[x][y]);
 			}

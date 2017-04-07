@@ -5,6 +5,10 @@ Data_Store::Data_Store(){
 	size_x=default_map_cols;
 	size_y=default_map_rows;
 	
+	actor_half_rows=default_actor_half_rows;
+	actor_half_cols=default_actor_half_cols;
+	vision_radius=default_vision_radius;
+	
 	location_values.push_back(size_x/2);
 	location_values.push_back(size_y/2);
 	
@@ -28,11 +32,11 @@ Data_Store::Data_Store(){
 }
 
 void Data_Store::update_map(){
-	int x_start=location_values[0]-default_vision_radius-1;
-	int y_start=location_values[1]-default_vision_radius-1;
+	int x_start=location_values[0]-vision_radius;
+	int y_start=location_values[1]-vision_radius;
 	
-	int x_end=location_values[0]+default_vision_radius;
-	int y_end=location_values[1]+default_vision_radius;
+	int x_end=location_values[0]+vision_radius;
+	int y_end=location_values[1]+vision_radius;
 	
 	int x_offset=0;
 	int y_offset=0;
@@ -52,34 +56,36 @@ void Data_Store::update_map(){
 		y_end=size_y;
 	}
 	
-
+	printf("x_start: %d, x_end: %d, x_offset: %d\n", x_start, x_end, x_offset);
+	
 	for (int x=x_start, i=0; x<x_end; x++, i++){
 		for (int y=y_start, j=0; y<y_end; y++, j++){
-
-			map[x][y]=vision[i+x_offset][j+y_offset];
+			if (vision[i+x_offset][j+y_offset] == kObstacle || 
+			    vision[i+x_offset][j+y_offset] == kEmpty || 
+				vision[i+x_offset][j+y_offset] == kActor){
+				map[x][y]=vision[i+x_offset][j+y_offset];
+			}
+			
 		}
 	}
 	
-	map[destination_values[0]][destination_values[1]]=kDestination;
+	
 	
 	print_map();
 	
 }
 
-void Data_Store::recieve_vision(){
+void Data_Store::update_results(double result){
+	results.push_back(result);
+}
+
+void Data_Store::recieve_vision(char * vision_array){
 	
-	
-	/*for (int x=0; x<default_vision_radius*2+1; x++){
-		for (int y=0; y<default_vision_radius*2+1; y++){
-			if (x==0 || y == 0 || y == default_vision_radius*2 || x==default_vision_radius*2){
-				vision[x][y]=kObstacle;
-			}
-		}
-		
-	}*/
-	
-	
-	
+	for (int i=0; i<(vision_radius*2+1)*(vision_radius*2+1); i++){
+		vision[i%(vision_radius*2+1)][i/(vision_radius*2+1)]=vision_array[i];	
+	}
+
+	print_vision();
 	update_map();
 }
 
@@ -127,12 +133,12 @@ void Data_Store::initialize_map(){
 	}
 	map[location_values[0]][location_values[1]]=kSelf;
 	
-	print_map();
+	//print_map();
 }
 
 void Data_Store::initialize_vision(){
-	for (int x=0; x<2*default_vision_radius+1; x++){
-		vision.push_back(std::vector<char> (default_vision_radius*2+1, kEmpty));
+	for (int x=0; x<2*vision_radius+1; x++){
+		vision.push_back(std::vector<char> (vision_radius*2+1, kEmpty));
 	}
 	
 	
@@ -169,7 +175,12 @@ void Data_Store::print_points_values(){
 void Data_Store::print_map(){
 	for (int y=0; y<size_y; y++){
 		for (int x=0; x<size_x; x++){
-			printf("%c ",map[x][y]);
+			if (x!=location_values[0] || y!=location_values[1]){
+				printf("%c ",map[x][y]);
+			}
+			else {
+				printf("%c ",kSelf);
+			}
 			
 		}
 		printf("\n");
@@ -178,8 +189,8 @@ void Data_Store::print_map(){
 	
 }
 void Data_Store::print_vision(){
-	for (int y=0; y<default_vision_radius*2+1; y++){
-		for (int x=0; x<default_vision_radius*2+1; x++){
+	for (int y=0; y<vision_radius*2+1; y++){
+		for (int x=0; x<vision_radius*2+1; x++){
 			printf("%c ", vision[x][y]);
 		}
 		printf("\n");

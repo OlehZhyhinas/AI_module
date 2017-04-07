@@ -2,25 +2,29 @@
 #define DATA_STORE_H
 
 #include <vector>
-
-		const static char kObstacle        = 'O';
-		const static char kEmpty           = 'E';
-		const static char kActor           = 'A';
-		const static char kCollision       = 'C';
-		const static char kSelf            = 'M';
-		const static char kDestination     = 'D';
-		const static int number_of_points  = 6;
-		const static int default_map_cols = 40;
-		const static int default_map_rows = 40;
-		const static int default_vision_radius = 5;
-		const static int default_actor_half_rows = 1;
-		const static int default_actor_half_cols = 1;
+//constants 
+const static char kObstacle        = 'O';
+const static char kEmpty           = 'E';
+const static char kActor           = 'A';
+const static char kCollision       = 'C';
+const static char kSelf            = 'M';
+const static char kDestination     = 'D';
+const static int number_of_points  = 6;
+const static int default_map_cols = 40;
+const static int default_map_rows = 40;
+const static int default_vision_radius = 5;
+const static int default_actor_half_rows = 0;
+const static int default_actor_half_cols = 0;
 
 class Data_Store {
 	public :
 		
-		//constants 
-
+		
+		int vision_radius;
+		int actor_half_rows;
+		int actor_half_cols;
+		int size_x;
+		int size_y;
 		
 		
 		//data stored
@@ -38,10 +42,11 @@ class Data_Store {
 		std::vector<int> x_dest_history; //x destination history
 		std::vector<int> y_dest_history; //y destination history
 		
+		std::vector<double> results;
 		
 		
-		int size_x;
-		int size_y;
+		
+		
 		
 		
 
@@ -54,11 +59,12 @@ class Data_Store {
 		void generate_new_diff(std::vector< std:: vector <char> > old_map);
 		
 		
-		void recieve_vision(); //recieves the most recent vision data from the server
-		void update_map(); //creates a new map from the composition of map and vision, generates new diff, and replaces map with update_map
+		void recieve_vision(char * vision_array); //recieves the most recent vision data from the server
 		void recieve_location(int x, int y); // recieve current location and update x and y history
 		void recieve_destination(int x, int y);
 		
+		void update_map(); //creates a new map from the composition of map and vision, generates new diff, and replaces map with update_map
+		void update_results(double result);  //updated the results of a move
 		
 		void print_map();
 		void print_vision();

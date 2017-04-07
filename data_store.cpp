@@ -12,6 +12,9 @@ Data_Store::Data_Store(){
 	location_values.push_back(size_x/2);
 	location_values.push_back(size_y/2);
 	
+	next_move.push_back(location_values[0]);
+	next_move.push_back(location_values[1]);
+	
 	x_history.push_back(location_values[0]);
 	y_history.push_back(location_values[1]);
 	

@@ -48,6 +48,8 @@ class Data_Store {
 		
 		std::vector<double> results;
 		
+		std::vector<int> next_move;
+		
 		
 		
 		

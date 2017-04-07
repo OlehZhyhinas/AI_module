@@ -49,6 +49,8 @@ double Results::calculate_score(){
 		printf("%lf\n", distance_change);
 		if (check_collision()==0){
 			d->results.push_back(-1*distance_change);
+			d->collision_status=0;
+			d->collision_id=(char)0;
 			
 		}
 		else{

@@ -52,6 +52,7 @@ void Mod_Master::calculate_all_attractivness(){
 			}
 		}
 	}
+	collision_handler();
 	update_point_values();
 }
 
@@ -95,10 +96,34 @@ void Mod_Master::update_point_values(){
 	for (int i = 0; i < obstacle.size(); i++) obst_avg += obstacle[i];
 	obst_avg=obst_avg/actor.size();
 	
+	/*for (int x=0; x<d->size_x; x++){
+		for (int y=0; y<d->size_y; y++){
+			switch (d->map[x][y]){
+				case kActor :
+					d->location_attractivness[x][y]=act_avg;
+					break;
+				case kDestination : 
+					d->location_attractivness[x][y]=dest_avg;
+					break; 
+				case kObstacle : 
+					d->location_attractivness[x][y]=obst_avg;
+					break;
+				default :
+					d->location_attractivness[x][y]=0;
+			}	
+		}
+	}*/
 	
-	printf("dest: %3.2lf, act: %3.2lf, obst: %3.2lf\n", dest_avg, act_avg, obst_avg);
-	
-	
+}
+
+void Mod_Master::collision_handler(){
+	for (int x=0; x<d->size_x; x++){
+		for (int y=0; y<d->size_y; y++){
+			if (d->map[x][y]==d->collision_id){
+				d->location_attractivness[x][y] -= 50;
+			}
+		}
+	}
 	
 	
 }

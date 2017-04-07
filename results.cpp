@@ -48,15 +48,20 @@ double Results::calculate_score(){
 	
 		printf("%lf\n", distance_change);
 		if (check_collision()==0){
-			return -1*distance_change;
+			d->results.push_back(-1*distance_change);
+			
 		}
 		else{
-			return -1000;
+			d->collision_status=1;
+			d->collision_id=identify_obstacle();
+			d->results.push_back(-1000);
+			
 		}
 	}
 	else {
-		return 1;
+		d->results.push_back(0);
 	}
+	return d->results.back();
 	
 	
 }

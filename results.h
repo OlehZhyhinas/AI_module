@@ -16,4 +16,4 @@ class Results {
 };
 
 
-#endif /*DATA_STORE_H*/
+#endif /*RESULTS_H_H*/

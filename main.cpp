@@ -1,5 +1,6 @@
 #include "data_store.h"
 #include "results.h"
+#include "mod_master.h"
 #include "stdio.h"
 
 
@@ -8,6 +9,7 @@ int main (void){
 
 	Data_Store d;
 	Results r(&d);
+	Mod_Master m(&d);
 	
 	d.recieve_location(20,20);
 	d.recieve_destination(10,10);
@@ -28,10 +30,17 @@ int main (void){
 	d.recieve_location(19,19);
 	d.print_map();
 	printf("%lf\n", r.calculate_score());
+	m.calculate_all_attractivness();
+	d.print_location_attractivness();
+	
 	
 	d.recieve_location(18,18);
 	d.print_map();
 	printf("%lf\n", r.calculate_score());
+	m.calculate_all_attractivness();
+	d.print_location_attractivness();
+	//m.calculate_all_attractivness();
+	//d.print_location_attractivness();
 	
 	d.recieve_location(17,17);
 	char vision_array2[] ={kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, kEmpty, 
@@ -48,8 +57,11 @@ int main (void){
 						};
 	//d.print_map();
 	d.recieve_vision(vision_array2);
-	
 	printf("%lf\n", r.calculate_score());
+	m.calculate_all_attractivness();
+	d.print_location_attractivness();
+	//m.calculate_all_attractivness();
+	//d.print_location_attractivness();
 	
 	//printf("%lf \n",r.calculate_distance(0,0, 5,5));
 	

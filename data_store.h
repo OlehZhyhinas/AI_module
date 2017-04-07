@@ -26,11 +26,15 @@ class Data_Store {
 		int size_x;
 		int size_y;
 		
+		int collision_status; 
+		char collision_id;
+		
 		
 		//data stored
 		std::vector< std:: vector <char> > vision; //latest vision data
 		std::vector< std:: vector <char> > map;  //x by y sized grid of chars, of the most up to date map information
 		std::vector< std:: vector <char> > diffs; // a list of diffs in the form of x location, y location, character
+		std::vector< std:: vector <double> > location_attractivness;
 
 		std::vector< std:: vector <double> > points_values;  //the value of each class of points on the map
 		
@@ -55,6 +59,7 @@ class Data_Store {
 		void initialize_map();
 		void initialize_vision();
 		void initialize_points_values();
+		void initialize_location_attractivness();
 		
 		void generate_new_diff(std::vector< std:: vector <char> > old_map);
 		
@@ -69,6 +74,7 @@ class Data_Store {
 		void print_map();
 		void print_vision();
 		void print_points_values();
+		void print_location_attractivness();
 		
 
 

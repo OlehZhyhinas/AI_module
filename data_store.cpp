@@ -25,6 +25,7 @@ Data_Store::Data_Store(){
 	initialize_vision();
 	initialize_map();
 	initialize_points_values();
+	initialize_location_attractivness();
 	
 	
 	
@@ -68,7 +69,7 @@ void Data_Store::update_map(){
 			
 		}
 	}
-	
+	map[destination_values[0]][destination_values[1]]=kDestination;
 	
 	
 	print_map();
@@ -132,6 +133,7 @@ void Data_Store::initialize_map(){
 		map.push_back(std::vector<char> (y_max, kEmpty));
 	}
 	map[location_values[0]][location_values[1]]=kSelf;
+	map[destination_values[0]][destination_values[1]]=kDestination;
 	
 	//print_map();
 }
@@ -156,6 +158,13 @@ void Data_Store::initialize_points_values(){
 	points_values[0][5]=(double)kDestination;
 	
 	//print_points_values();
+	
+}
+
+void Data_Store::initialize_location_attractivness(){
+	for (int i=0; i<size_x; i++){
+		location_attractivness.push_back(std::vector<double> (size_y, 0));
+	}
 	
 }
 
@@ -192,6 +201,16 @@ void Data_Store::print_vision(){
 	for (int y=0; y<vision_radius*2+1; y++){
 		for (int x=0; x<vision_radius*2+1; x++){
 			printf("%c ", vision[x][y]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+void Data_Store::print_location_attractivness(){
+	for (int y=0; y<size_y; y++){
+		for (int x=0; x<size_x; x++){
+			printf("%1.1lf ", location_attractivness[x][y]);
 		}
 		printf("\n");
 	}

@@ -35,47 +35,61 @@ Data_Store::Data_Store(){
 	
 }
 
+Data_Store::Data_Store(int map_x_size, int map_y_size, int act_x_size, int act_y_size, int v_radius){
+	size_x=map_x_size;
+	size_y=map_y_size;
+	
+	actor_half_rows=act_y_size;
+	actor_half_cols=act_x_size;
+	vision_radius=v_radius;
+	
+	location_values.push_back(0);
+	location_values.push_back(0);
+	
+	next_move.push_back(0);
+	next_move.push_back(0);
+	
+	x_history.push_back(0);
+	y_history.push_back(0);
+	
+	destination_values.push_back(0);
+	destination_values.push_back(0);
+	
+	x_dest_history.push_back(0);
+	y_dest_history.push_back(0);
+		
+	
+	initialize_vision();
+	initialize_map();
+	initialize_points_values();
+	initialize_location_attractivness();
+	
+	
+	
+	
+}
+
 void Data_Store::update_map(){
+	
 	int x_start=location_values[0]-vision_radius;
 	int y_start=location_values[1]-vision_radius;
-	
-	int x_end=location_values[0]+vision_radius;
-	int y_end=location_values[1]+vision_radius;
-	
-	int x_offset=0;
-	int y_offset=0;
-	
-	if (x_start<=0){
-		x_offset=0-x_start;
-		x_start=0;
-	}
-	if (y_start<=0){
-		y_offset=0-y_start;
-		y_start=0;
-	}
-	if (x_end>=size_x){
-		x_end=size_x;
-	}
-	if (y_end>=size_y){
-		y_end=size_y;
-	}
-	
-	printf("x_start: %d, x_end: %d, x_offset: %d\n", x_start, x_end, x_offset);
-	
-	for (int x=x_start, i=0; x<x_end; x++, i++){
-		for (int y=y_start, j=0; y<y_end; y++, j++){
-			if (vision[i+x_offset][j+y_offset] == kObstacle || 
-			    vision[i+x_offset][j+y_offset] == kEmpty || 
-				vision[i+x_offset][j+y_offset] == kActor){
-				map[x][y]=vision[i+x_offset][j+y_offset];
+
+	for (int x=0; x<2*vision_radius+1; x++){
+		for (int y=0; y<2*vision_radius+1; y++){
+			if (x_start+x >=0 && x_start+x < size_x 
+			&& y_start+y >=0 && y_start+y < size_y){
+				//printf("adding to map %c\n", vision[x][y]);
+				if (vision[x][y]!=kCollision){
+					map[x_start+x][y_start+y]=vision[x][y];
+				}
 			}
-			
 		}
 	}
+	
 	map[destination_values[0]][destination_values[1]]=kDestination;
 	
 	
-	print_map();
+	//print_map();
 	
 }
 
@@ -89,7 +103,7 @@ void Data_Store::recieve_vision(char * vision_array){
 		vision[i%(vision_radius*2+1)][i/(vision_radius*2+1)]=vision_array[i];	
 	}
 
-	print_vision();
+	//print_vision();
 	update_map();
 }
 
@@ -97,6 +111,7 @@ void Data_Store::recieve_location(int x, int y){
 	
 	location_values[0]=x;
 	location_values[1]=y;
+	//map[x][y]=kSelf;
 	x_history.push_back(x);
 	y_history.push_back(y);
 	
@@ -106,6 +121,7 @@ void Data_Store::recieve_destination(int x, int y){
 	
 	destination_values[0]=x;
 	destination_values[1]=y;
+	map[x][y]=kDestination;
 	x_dest_history.push_back(x);
 	y_dest_history.push_back(y);
 	
@@ -113,32 +129,19 @@ void Data_Store::recieve_destination(int x, int y){
 
 
 void Data_Store::initialize_map(){
-	int x_max;
-	int y_max;
+
 	
-	
-	
-	if (size_x != -1){
-		x_max=default_map_cols;
+	for (int x=0; x<size_x; x++){
+		map.push_back(std::vector<char> (size_y, kEmpty));
 	}
-	else{
-		x_max=size_x;
+	for (int x=0; x<size_x; x++){
+		for (int y=0; y<size_y; y++){
+			map[x][y]=kEmpty;
+		}
 	}
+
 	
-	if (size_y != -1){
-		y_max=default_map_rows;
-	}
-	else{
-		y_max=size_y;
-	}
-	
-	for (int x=0; x<x_max; x++){
-		map.push_back(std::vector<char> (y_max, kEmpty));
-	}
-	//map[location_values[0]][location_values[1]]=kSelf;
-	//map[destination_values[0]][destination_values[1]]=kDestination;
-	
-	//print_map();
+	print_map();
 }
 
 void Data_Store::initialize_vision(){
@@ -186,12 +189,12 @@ void Data_Store::print_points_values(){
 
 void Data_Store::print_map(){
 	
-	//printf ("x: %d, y: %d ", location_values[0], location_values[1]);
+	
 	for (int y=0; y<size_y; y++){
 		for (int x=0; x<size_x; x++){
 			
 			if (x!=location_values[0] || y!=location_values[1]){
-				printf("%c ",map[x][y]);
+				printf("%d ",(int)(map[x][y]));
 			}
 			else {
 				printf("%c ",kSelf);

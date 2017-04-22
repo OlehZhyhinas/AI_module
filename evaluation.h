@@ -12,6 +12,7 @@
 class Evaluation {
 public:
 	Data_Store* d;
+	
 	std::vector<int> shortest_path_next;
 	std::vector<int> best_target;
 	

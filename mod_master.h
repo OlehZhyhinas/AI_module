@@ -1,5 +1,5 @@
 #ifndef MOD_MASTER_H
-#define MOD_MASTER_H_H
+#define MOD_MASTER_H
 
 #include "data_store.h"
 

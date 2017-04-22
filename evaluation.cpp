@@ -2,21 +2,24 @@
 #include "stdio.h"
 #include "math.h"
 #include "stdlib.h"
-
+#include <unistd.h>
 
 Evaluation::Evaluation(Data_Store* d_pointer){
 	d=d_pointer;
-	best_target.push_back(0);
+	int x=d->size_x;
+	direction = UP;
+	//printf("d is %d \n", d);
+	/*best_target.push_back(0);
 	best_target.push_back(0);
 	shortest_path_next.push_back(0);
-	shortest_path_next.push_back(0);
+	shortest_path_next.push_back(0);*/
 }
 
 
 
 void Evaluation::next_move(){
-	double max= -1000000000;
-	double min=  1000000000;
+	/*double max= 0;
+	double min=  0;
 	
 	double range=0;
 	int selection;
@@ -38,9 +41,29 @@ void Evaluation::next_move(){
 		}
 	}
 	
-	range=max-min;
-	direction=UP;
+	range=max-min;*/
+	printf("%d\n", direction);
 	shortest_path();
+
+	switch (direction){
+		case UP:
+			d->next_move[0]=d->location_values[0];
+			d->next_move[1]=d->location_values[1]-1;
+			break;
+		case RIGHT:	
+			d->next_move[0]=d->location_values[0]+1;
+			d->next_move[1]=d->location_values[1];
+			break;
+		case DOWN:
+			d->next_move[0]=d->location_values[0];
+			d->next_move[1]=d->location_values[1]+1;
+			break;
+		case LEFT:
+			d->next_move[0]=d->location_values[0]-1;
+			d->next_move[1]=d->location_values[1];
+			break;
+	}
+/*
 	
 	
 	
@@ -85,19 +108,35 @@ void Evaluation::next_move(){
 		d->next_move[0]=d->location_values[0]-1;
 		d->next_move[1]=d->location_values[1];
 	}
-	printf("next_move x: %d, y: %d\n", d->next_move[0], d->next_move[1]);
-	
+	//printf("next_move x: %d, y: %d\n", d->next_move[0], d->next_move[1]);
+	*/
 }
 
 void Evaluation::shortest_path(){
 	std::vector< std::vector <double>  > map_copy;
-	for (int i=0; i<d->size_x; i++){
-		map_copy.push_back(std::vector<double> (d->size_y,0));
+	
+	for (int x=0; x<d->size_x; x++){
+		map_copy.push_back(std::vector<double> (d->size_y, 0));
 	}
+	//printf("d is now %d \n", d);
+	//int a =d->size_x;
+	int max=-1000000;
+	int x_loc=0;
+	int y_loc=0;
+	for (int x=0; x<d->size_x; x++){
+		for (int y=0; y<d->size_y; y++){
+			if (d->location_attractivness[x][y]!=0 && d->location_attractivness[x][y]>=max){
+				max=d->location_attractivness[x][y];
+				x_loc=x;
+				y_loc=y;
+			}
+		}
+	}
+
 	
 	for (int x=0; x<d->size_x; x++){
 		for (int y=0; y<d->size_y; y++){
-			if (d->location_attractivness[x][y]>=0){
+			if (d->location_attractivness[x][y]>=max || d->location_attractivness[x][y] == 0){
 				map_copy[x][y]=0;
 			}
 			else{
@@ -105,73 +144,91 @@ void Evaluation::shortest_path(){
 			}
 		}
 	}
-	
-	map_copy[best_target[0]][best_target[1]]=1;
 	map_copy[d->location_values[0]][d->location_values[1]]=0;
-	
-	
-	
-	while (map_copy[d->location_values[0]][d->location_values[1]]==0){
-		for (int x=1; x<d->size_x-1; x++){
-			for (int y=1; y<d->size_y-1; y++){
-				if (map_copy[x][y]>0){
-					if (map_copy[x-1][y]>map_copy[x][y]+1 || map_copy[x-1][y] == 0){
-						map_copy[x-1][y]=map_copy[x][y]+1;
-					}
-					if (map_copy[x+1][y]>map_copy[x][y]+1 || map_copy[x+1][y] == 0){
-						map_copy[x+1][y]=map_copy[x][y]+1;
-					}
-					if (map_copy[x][y-1]>map_copy[x][y]+1 || map_copy[x][y-1] == 0){
-						map_copy[x][y-1]=map_copy[x][y]+1;
-					}
-					if (map_copy[x][y+1]>map_copy[x][y]+1 || map_copy[x][y+1] == 0){
-						map_copy[x][y+1]=map_copy[x][y]+1;
-					}
-					
-					
+	map_copy[x_loc][y_loc]=1;	
+	max=1;
+	while (map_copy[d->location_values[0]][d->location_values[1]] <= 0){//find shortest path
+		
+		/*for (int x =0; x<d->size_x; x++){
+			for (int y =0; y<d->size_y; y++){
+				if (x==d->location_values[0] && y==d->location_values[1]){
+					printf("%c  ", 'M');
 				}
-			}	
-		}	
+				else {
+					printf("%2.0lf ", map_copy[x][y]);
+				}
+				
+			}
+			printf("\n");
+		}
+		usleep(100000);*/
+		for (int x =0; x<d->size_x; x++){
+			for (int y=0; y<d->size_y; y++){
+				if (map_copy[x][y]==max){ //if at the edge of the wavefront
+					if (x-1 > 0){ //if not on left edge
+						if (map_copy[x-1][y]==0) { //if left cell is empty
+							map_copy[x-1][y]=max+1;
+						}
+					}
+					if (x+1 < d->size_x){ //if not on right edge
+						if (map_copy[x+1][y]==0) { //if right cell is empty
+							map_copy[x+1][y]=max+1;
+						}
+					}
+
+					if (y-1 > 0){ //if not on top edge
+						if (map_copy[x][y-1]==0) { //if top cell is empty
+							map_copy[x][y-1]=max+1;
+						}
+					}
+					if (y+1 < d->size_y){ //if not on bottom edge
+						if (map_copy[x][y+1]==0) { //if bottom cell is empty
+							map_copy[x][y+1]=max+1;
+						}
+					}
+				}
+
+			}
+		}
+		max++;
 	}
+
 	
-	int min=100000;
-	if (d->location_values[0]>0){
-		if (map_copy[d->location_values[0]-1][d->location_values[1]] < min && map_copy[d->location_values[0]+1][d->location_values[1]] > 0){
-			min = map_copy[d->location_values[0]-1][d->location_values[1]];
-			shortest_path_next[0]=d->location_values[0]-1;
-			shortest_path_next[1]=d->location_values[1];
+
+	int lowest = max+1;
+	
+	int x= d->location_values[0];
+	int y= d->location_values[1];
+
+	if (x-1 > 0){ //if not on left edge
+		if (map_copy[x-1][y] <= lowest && map_copy[x-1][y] >0){
+			lowest=map_copy[x-1][y];
 			direction=LEFT;
-		}
+		}				
 	}
-	
-	if (d->location_values[0]<d->size_x-1){
-		if (map_copy[d->location_values[0]+1][d->location_values[1]]<min && map_copy[d->location_values[0]+1][d->location_values[1]] > 0){
-			min = map_copy[d->location_values[0]+1][d->location_values[1]];
-			shortest_path_next[0]=d->location_values[0]+1;
-			shortest_path_next[1]=d->location_values[1];
+	if (x+1 < d->size_x){ //if not on right edge
+		if (map_copy[x+1][y] <= lowest && map_copy[x+1][y] >0){
+			lowest=map_copy[x+1][y];
 			direction=RIGHT;
-		}
+		}				
 	}
-	
-	
-	if (d->location_values[1]>0){
-		if (map_copy[d->location_values[0]][d->location_values[1]-1]<min && map_copy[d->location_values[0]][d->location_values[1]-1] > 0){
-			min = map_copy[d->location_values[0]][d->location_values[1]-1];
-			shortest_path_next[0]=d->location_values[0];
-			shortest_path_next[1]=d->location_values[1]-1;
-			direction=DOWN;
-		}
-	}
-	
-	
-	if (d->location_values[1]<d->size_y-1){
-		if (map_copy[d->location_values[0]][d->location_values[1]+1]<min && map_copy[d->location_values[0]][d->location_values[1]+1] > 0){
-			min = map_copy[d->location_values[0]][d->location_values[1]+1];
-			shortest_path_next[0]=d->location_values[0];
-			shortest_path_next[1]=d->location_values[1]+1;
+	if (y-1 > 0){ //if not on top edge
+		if (map_copy[x][y-1] <= lowest && map_copy[x][y-1] >0){
+			lowest=map_copy[x][y-1];
 			direction=UP;
-		}
+		}				
 	}
-	printf("direction: %d\n", direction);
+	if (y+1 < d->size_y){ //if not on bottom edge
+		if (map_copy[x][y+1] <= lowest && map_copy[x][y+1] >0){
+			lowest=map_copy[x][y+1];
+			direction=DOWN;
+		}				
+	}
+	
+
+	
+	
+	
+	//printf("direction: %d\n", direction);
 }
 

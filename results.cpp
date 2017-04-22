@@ -3,7 +3,7 @@
 #include "math.h"
 
 Results::Results(Data_Store* d_pointer){
-		d=d_pointer;
+	d=d_pointer;
 }
 
 
@@ -16,7 +16,7 @@ double Results::calculate_distance(int x1, int y1, int x2, int y2 ){
 
 int Results::check_collision(){
 	
-	if (d->vision[default_vision_radius][default_vision_radius]==kCollision){
+	if (d->vision[d->vision_radius][d->vision_radius]==kCollision){
 		return 1;	
 	}
 	else {
@@ -39,14 +39,14 @@ double Results::calculate_score(){
 	if (d->x_history.size()>1){
 		double current_distance= calculate_distance(d->destination_values[0], d->destination_values[0], 
 	                                            d->location_values[0], d->location_values[0]);
-		printf("%lf ", current_distance);											
+		//printf("%lf ", current_distance);											
 		double previous_distance= calculate_distance(d->destination_values[0], d->destination_values[0],
 	                                             d->x_history[d->x_history.size()-2], d->y_history[d->y_history.size()-2]);
 	
-		printf("%lf ", previous_distance);	
+		//printf("%lf ", previous_distance);	
 		double distance_change=current_distance-previous_distance;
 	
-		printf("%lf\n", distance_change);
+		//printf("%lf\n", distance_change);
 		if (check_collision()==0){
 			d->results.push_back(-1*distance_change);
 			d->collision_status=0;
@@ -56,7 +56,8 @@ double Results::calculate_score(){
 		else{
 			d->collision_status=1;
 			d->collision_id=identify_obstacle();
-			d->results.push_back(-1000);
+			printf("collided with %c\n", d->collision_id);
+			d->results.push_back(-50);
 			
 		}
 	}

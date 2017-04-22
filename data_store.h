@@ -58,6 +58,8 @@ class Data_Store {
 
 		//methods
 		Data_Store();
+		Data_Store(int map_x_size, int map_y_size, int act_x_size, int act_y_size, int v_radius);
+
 		void initialize_map();
 		void initialize_vision();
 		void initialize_points_values();

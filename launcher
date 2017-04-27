@@ -1,0 +1,7 @@
+total=4
+
+
+for ((i=0; $i<$total; ++i))
+do
+    ./AI > 300_by_300_parallel${i}of${total}.dat &
+done

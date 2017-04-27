@@ -1,0 +1,142 @@
+running AI # 0
+it took 368 moves
+there were 35 collisions
+O    E    A    C    M    D    
+-9295.79 0.00 0.00 0.00 0.00 85.95 
+
+running AI # 1
+it took 1791 moves
+there were 37 collisions
+O    E    A    C    M    D    
+-10808.42 0.00 0.00 0.00 0.00 9.54 
+
+running AI # 2
+it took 19 moves
+there were 2 collisions
+O    E    A    C    M    D    
+-717.78 0.00 0.00 0.00 0.00 82.23 
+
+running AI # 3
+it took 908 moves
+there were 19 collisions
+O    E    A    C    M    D    
+-5825.36 0.00 0.00 0.00 0.00 26.01 
+
+running AI # 4
+it took 316 moves
+there were 19 collisions
+O    E    A    C    M    D    
+-3579.17 0.00 0.00 0.00 0.00 4.90 
+
+running AI # 5
+it took 324 moves
+there were 29 collisions
+O    E    A    C    M    D    
+-6969.49 0.00 0.00 0.00 0.00 44.75 
+
+running AI # 6
+it took 407 moves
+there were 22 collisions
+O    E    A    C    M    D    
+-5318.79 0.00 0.00 0.00 0.00 10.35 
+
+running AI # 7
+it took 613 moves
+there were 27 collisions
+O    E    A    C    M    D    
+-6987.70 0.00 0.00 0.00 0.00 58.93 
+
+running AI # 8
+it took 114 moves
+there were 11 collisions
+O    E    A    C    M    D    
+-3198.03 0.00 0.00 0.00 0.00 43.55 
+
+running AI # 9
+it took 123 moves
+there were 17 collisions
+O    E    A    C    M    D    
+-4657.05 0.00 0.00 0.00 0.00 19.22 
+
+
+
+
+=========Non trained AI run complete==========
+the field size was 200 by 200
+It took 66101 ms to complete
+there were 4983 moves made
+there were 218 collisions
+it took on average 0.075385 ms per move
+there were on average 0.043749 collisions per move
+
+
+running AI # 0
+it took 213 moves
+there were 0 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 1
+it took 158 moves
+there were 0 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 2
+it took 73 moves
+there were 1 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 3
+it took 120 moves
+there were 0 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 4
+it took 295 moves
+there were 1 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 5
+it took 85 moves
+there were 0 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 6
+it took 63 moves
+there were 0 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 7
+it took 41 moves
+there were 1 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 8
+it took 189 moves
+there were 1 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+running AI # 9
+it took 173 moves
+there were 1 collisions
+O    E    A    C    M    D    
+-5735.00 0.00 0.00 0.00 0.00 38.00 
+
+
+
+
+=======Trained AI run complete========
+the field size was 200 by 200
+It took 23885 ms to complete
+there were 1410 moves made
+there were 5 collisions
+it took on average 0.059033 ms per move
+there were on average 0.003546 collisions per move

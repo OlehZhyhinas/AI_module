@@ -4,12 +4,18 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include <unistd.h>
+#include <sys/time.h>
 
 #define dimensions 300
 
+#define ai_itterations 10
+
 std::vector< std::vector<char> > field;
 std::vector<int> number_of_moves;
+int total_moves=0;
 std::vector<int> number_of_collisions;
+int total_collisions=0;
+std::vector<double> value_of_points;//obst, act, destination, 1,0   1,2    1,5     
 char vision_array[(default_vision_radius*2+1)*(default_vision_radius*2+1)];
 
 void update_vision(int x, int y){
@@ -51,6 +57,9 @@ void update_vision(int x, int y){
 }
 int main (void){
 	srand (time(NULL));
+	struct timeval tp;
+	long start=0;
+	long stop=0;
 	/*Data_Store d;
 	Results r(&d);
 	Mod_Master m(&d);
@@ -92,6 +101,9 @@ int main (void){
 			}
 		}
 	}
+	value_of_points.push_back(0);
+	value_of_points.push_back(0);
+	value_of_points.push_back(0);
 
 	/*AI a;
 	a.initialize_data_store(dimensions,dimensions,0,0,5);
@@ -121,8 +133,9 @@ int main (void){
 
 	}*/
 
-
-	for (int i=0; i<10; i++){
+	gettimeofday(&tp, NULL);
+	start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+	for (int i=0; i<ai_itterations; i++){
 		AI a;
 		a.initialize_data_store(dimensions,dimensions,0,0,5);
 		a.initialize_results();
@@ -146,20 +159,46 @@ int main (void){
 
 		}
 		printf("it took %d moves\n", number_of_moves[number_of_moves.size()-1]);
+		total_moves+=number_of_moves[number_of_moves.size()-1];
 		printf("there were %d collisions\n", number_of_collisions[number_of_collisions.size()-1]);
+		total_collisions+=number_of_collisions[number_of_collisions.size()-1];
 		a.d->print_points_values();
+		value_of_points[0]+=a.d->points_values[1][0];
+		value_of_points[1]+=a.d->points_values[1][2];
+		value_of_points[2]+=a.d->points_values[1][5];
+		
 		a.~AI();
 		
 		
 	}
-	for (int i=0; i<10; i++){
+	gettimeofday(&tp, NULL);
+	stop = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+
+	printf("\n\n\n=========Non trained AI run complete==========\n");
+	printf("the field size was %d by %d\n", dimensions, dimensions);
+	printf("It took %ld ms to complete\n", stop-start);
+	printf("there were %d moves made\n", total_moves);
+	printf("there were %d collisions\n", total_collisions);
+	
+	printf("it took on average %lf ms per move\n", 1.0*total_moves/(stop-start));
+	printf("there were on average %lf collisions per move\n\n\n", 1.0*total_collisions/total_moves);
+	
+	value_of_points[0]=value_of_points[0]/ai_itterations;
+	value_of_points[1]=value_of_points[1]/ai_itterations;
+	value_of_points[2]=value_of_points[2]/ai_itterations;
+	
+	total_moves=0;
+	total_collisions=0;
+	gettimeofday(&tp, NULL);
+	start = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+	for (int i=0; i<ai_itterations; i++){
 		AI a;
 		a.initialize_data_store(dimensions,dimensions,0,0,5);
 		a.initialize_results();
 		a.initialize_mod_master();
 		a.initialize_evaluation();
 		a.launch_window();
-		a.set_points_values(-1100,0,50);
+		a.set_points_values(value_of_points[0],value_of_points[1],value_of_points[2]);
 		a.set_destination(rand()%(dimensions-5)+2, rand()%(dimensions-5)+2);
 		a.set_location(rand()%(dimensions-5)+2, rand()%(dimensions-5)+2);
 		printf("running AI # %d\n", i);
@@ -177,12 +216,27 @@ int main (void){
 
 		}
 		printf("it took %d moves\n", number_of_moves[number_of_moves.size()-1]);
+		total_moves+=number_of_moves[number_of_moves.size()-1];
 		printf("there were %d collisions\n", number_of_collisions[number_of_collisions.size()-1]);
+		total_collisions+=number_of_collisions[number_of_collisions.size()-1];
 		a.d->print_points_values();
 		a.~AI();
 		
 		
 	}
+	gettimeofday(&tp, NULL);
+	stop = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+	
+	printf("\n\n\n=======Trained AI run complete========\n");
+	printf("the field size was %d by %d\n", dimensions, dimensions);
+	printf("It took %ld ms to complete\n", stop-start);
+	printf("there were %d moves made\n", total_moves);
+	printf("there were %d collisions\n", total_collisions);
+	
+	printf("it took on average %lf ms per move\n", 1.0*total_moves/(stop-start));
+	printf("there were on average %lf collisions per move\n", 1.0*total_collisions/total_moves);
+	
+	
 	return 0;
 }
 

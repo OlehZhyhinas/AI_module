@@ -18,6 +18,8 @@ Evaluation::Evaluation(Data_Store* d_pointer){
 
 
 void Evaluation::next_move(){
+	int selection=0;	
+
 	/*double max= 0;
 	double min=  0;
 	
@@ -42,8 +44,24 @@ void Evaluation::next_move(){
 	}
 	
 	range=max-min;*/
-	printf("%d\n", direction);
+	//printf("%d\n", direction);
 	shortest_path();
+	if (d->training==1){
+		selection = rand() % 1000;
+	}
+
+	if (selection>900 && selection<925 && d->location_values[1]>1){
+		direction=UP;
+	}
+	else if (selection>925 && selection<950 && d->location_values[0]<d->size_x-2){
+		direction=RIGHT;
+	}
+	else if (selection>950 && selection<975 && d->location_values[1]<d->size_y-2){
+		direction=DOWN;
+	}
+	else if (selection>975 && selection<999 && d->location_values[0]>1){
+		direction=LEFT;
+	}
 
 	switch (direction){
 		case UP:
@@ -149,10 +167,10 @@ void Evaluation::shortest_path(){
 	max=1;
 	while (map_copy[d->location_values[0]][d->location_values[1]] <= 0){//find shortest path
 		
-		/*for (int x =0; x<d->size_x; x++){
-			for (int y =0; y<d->size_y; y++){
+		/*for (int y =0; y<d->size_y; y++){
+			for (int x =0; x<d->size_x; x++){
 				if (x==d->location_values[0] && y==d->location_values[1]){
-					printf("%c  ", 'M');
+					printf("XXX");
 				}
 				else {
 					printf("%2.0lf ", map_copy[x][y]);

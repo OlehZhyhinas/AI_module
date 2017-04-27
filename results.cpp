@@ -56,7 +56,7 @@ double Results::calculate_score(){
 		else{
 			d->collision_status=1;
 			d->collision_id=identify_obstacle();
-			printf("collided with %c\n", d->collision_id);
+			//printf("collided with %c\n", d->collision_id);
 			d->results.push_back(-50);
 			
 		}

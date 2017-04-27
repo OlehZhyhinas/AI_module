@@ -51,7 +51,9 @@ class Data_Store {
 		std::vector<int> next_move;
 		
 		
-		
+		std::vector<int> map_corners; //corners of the map x_start x_end y_start y_end
+
+		int training;
 		
 		
 		

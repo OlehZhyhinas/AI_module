@@ -5,6 +5,14 @@ AI::AI(){
 	GUI=1;
 	win_bg_color = sf::Color::White;
 	bytes_per_pixel=4;
+	training=1;
+
+}
+
+AI::~AI(){
+	AI_window->close();
+	//d->~Data_Store();
+	
 
 }
 	
@@ -37,14 +45,17 @@ void AI::set_vision_data(char* vision_grid){
 }
 void AI::get_move(){
 	
-	if (d->location_values[0] == d->next_move[0] && d->location_values[1] == d->location_values[1]){
-		r->calculate_score();
-		//printf("score\n");
-		//d->print_map();
+
+	if (training){
+		if (d->location_values[0] == d->next_move[0] && d->location_values[1] == d->location_values[1]){
+			r->calculate_score();
+			//printf("score\n");
+			//d->print_map();
 	
-		m->calculate_all_attractivness();
-		//printf("atract\n");
-		//d->print_map();
+			m->calculate_all_attractivness();
+			//printf("atract\n");
+			//d->print_map();
+		}
 	}
 	e->d = d;
 	e->next_move();
@@ -59,6 +70,14 @@ void AI::set_location(int x, int y){
 void AI::set_destination(int x, int y){
 	d->recieve_destination(x,y);
 
+}
+
+void AI::set_points_values(int obst, int act, int dest){
+	d->points_values[1][0]=obst;
+	d->points_values[1][2]=act;
+	d->points_values[1][5]=dest;
+	training=0;
+	d->training=0;
 }
 
 void AI::launch_window(){

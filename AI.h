@@ -39,15 +39,16 @@ public:
 	sf::Uint8 * vision_pixels = NULL;
 
 	int GUI; 
+	int training;
 	
 
 	AI();
-	
+	~AI();
 	void initialize_data_store(int map_x_size, int map_y_size, int act_x_size, int act_y_size, int v_radius);
 	void initialize_results();
 	void initialize_mod_master();
 	void initialize_evaluation();
-
+	void set_points_values(int obst, int act, int dest);
 	void set_vision_data(char* vision_grid);
 	void get_move();
 	void set_location(int x, int y);

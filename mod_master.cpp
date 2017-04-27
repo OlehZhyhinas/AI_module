@@ -40,10 +40,10 @@ void Mod_Master::calculate_attractivness(int x, int y){//fails for calculating s
 	
 	if (d->map[x][y] == kActor || d->map[x][y] == kObstacle || d->map[x][y] == kDestination){
 		d->location_attractivness[x][y]+=actual_score;
-		printf("actual score: %.1lf \n", actual_score);
-		printf("base score: %.1lf \n", base_score);
-		printf("result: %.1lf \n", result);
-		printf("distance: %.1lf \n", delta_distance);
+		//printf("actual score: %.1lf \n", actual_score);
+		//printf("base score: %.1lf \n", base_score);
+		//printf("result: %.1lf \n", result);
+		//printf("distance: %.1lf \n", delta_distance);
 	}
 	else{
 		d->location_attractivness[x][y]=0;
@@ -59,8 +59,8 @@ void Mod_Master::calculate_all_attractivness(){
 		}
 	}
 	collision_handler();
-	//update_point_values();
-	d->print_location_attractivness();
+	update_point_values();
+	//d->print_location_attractivness();
 }
 
 void Mod_Master::update_point_values(){
@@ -93,16 +93,17 @@ void Mod_Master::update_point_values(){
 	double dest_avg=0;
 	for (int i = 0; i < destination.size(); i++) dest_avg += destination[i];
 	dest_avg=dest_avg/destination.size();
+	d->points_values[1][5]=dest_avg;
 	
 	double act_avg=0;
 	for (int i = 0; i < actor.size(); i++) act_avg += actor[i];
 	act_avg=act_avg/actor.size();
-	
+	d->points_values[1][2]=act_avg;
 	
 	double obst_avg=0;
 	for (int i = 0; i < obstacle.size(); i++) obst_avg += obstacle[i];
-	obst_avg=obst_avg/actor.size();
-	
+	obst_avg=obst_avg/obstacle.size();
+	d->points_values[1][0]=obst_avg;
 	
 	
 }
@@ -111,7 +112,7 @@ void Mod_Master::collision_handler(){
 	for (int x=0; x<d->size_x; x++){
 		for (int y=0; y<d->size_y; y++){
 			if (d->map[x][y]==d->collision_id){
-				d->location_attractivness[x][y] -= 50;
+				d->location_attractivness[x][y] -= 500;
 			}
 		}
 	}

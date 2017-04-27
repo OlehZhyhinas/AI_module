@@ -29,6 +29,7 @@ Data_Store::Data_Store(){
 	initialize_map();
 	initialize_points_values();
 	initialize_location_attractivness();
+	training=1;
 	
 	
 	
@@ -63,6 +64,7 @@ Data_Store::Data_Store(int map_x_size, int map_y_size, int act_x_size, int act_y
 	initialize_map();
 	initialize_points_values();
 	initialize_location_attractivness();
+	training=1;
 	
 	
 	
@@ -81,6 +83,20 @@ void Data_Store::update_map(){
 				//printf("adding to map %c\n", vision[x][y]);
 				if (vision[x][y]!=kCollision){
 					map[x_start+x][y_start+y]=vision[x][y];
+					if (training == 0 && !((x_start+x) == destination_values[0] && (y_start+y) == destination_values[1])){
+						switch(vision[x][y]){
+							case kObstacle :
+								location_attractivness[x_start+x][y_start+y]=points_values[1][0];
+								break;
+							case kActor :
+								location_attractivness[x_start+x][y_start+y]=points_values[1][2];
+								break;
+							case kDestination :
+								location_attractivness[x_start+x][y_start+y]=points_values[1][5];
+								break;
+
+						}
+					}
 				}
 			}
 		}
@@ -124,6 +140,9 @@ void Data_Store::recieve_destination(int x, int y){
 	map[x][y]=kDestination;
 	x_dest_history.push_back(x);
 	y_dest_history.push_back(y);
+	if (training==0){
+		location_attractivness[x][y]=points_values[1][5]; 
+	}
 	
 }
 
@@ -141,7 +160,7 @@ void Data_Store::initialize_map(){
 	}
 
 	
-	print_map();
+	//print_map();
 }
 
 void Data_Store::initialize_vision(){

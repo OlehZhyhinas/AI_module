@@ -23,6 +23,11 @@ Data_Store::Data_Store(){
 	
 	x_dest_history.push_back(destination_values[0]);
 	y_dest_history.push_back(destination_values[1]);
+
+	map_corners.push_back(0);
+	map_corners.push_back(0);
+	map_corners.push_back(0);
+	map_corners.push_back(0);
 	
 	
 	initialize_vision();
@@ -58,7 +63,12 @@ Data_Store::Data_Store(int map_x_size, int map_y_size, int act_x_size, int act_y
 	
 	x_dest_history.push_back(0);
 	y_dest_history.push_back(0);
-		
+	
+
+	map_corners.push_back(0);
+	map_corners.push_back(0);
+	map_corners.push_back(0);
+	map_corners.push_back(0);	
 	
 	initialize_vision();
 	initialize_map();
@@ -111,6 +121,100 @@ void Data_Store::update_map(){
 
 void Data_Store::update_results(double result){
 	results.push_back(result);
+}
+
+
+void Data_Store::shift_map(int x, int y){
+	if (x>0 && x<size_x-1){ //shift to the right
+		printf("shifting right\n");
+		for (int i=size_x-1; i-x>=0; i--){
+			for (int j=0; j<size_y; j++){
+				map[i][j]=map[i-x][j];
+				location_attractivness[i][j]=location_attractivness[i-x][j];
+			}
+		}
+		for (int i=0; i<x; i++){
+			for (int j=0; j<size_y; j++){
+				map[i][j]=kEmpty;
+				location_attractivness[i][j]=0;
+			}
+		}
+
+
+	}
+	else if (x<=0 && x>-1*(size_x-1)){ //shift to the left
+		printf("shifting left\n");
+		for (int i=0; i<size_x+x; i++){
+			for (int j=0; j<size_y; j++){
+				map[i][j]=map[i-x][j];
+				location_attractivness[i][j]=location_attractivness[i-x][j];
+			}
+		}
+		for (int i=size_x-x; i<size_x; i++){
+			for (int j=0; j<size_y; j++){
+				map[i][j]=kEmpty;
+				location_attractivness[i][j]=0;
+			}
+		}
+	}
+	else {  //location has no overlap
+		printf("location has no x overlap\n");
+		for (int i=0; i<size_x; i++){
+			for (int j=0; j<size_y; j++){
+				map[i][j]=kEmpty;
+				location_attractivness[i][j]=0;
+			}
+		}
+	}
+
+
+	if (y<0 && y>-1*(size_y-1)){  //shift up
+		printf("shifting up\n");
+		for (int i=0; i<size_x; i++){
+			for (int j=0; j<size_y+y; j++){
+				map[i][j]=map[i][j-y];
+				location_attractivness[i][j]=location_attractivness[i][j-y];
+			}
+		}
+		for (int i=0; i<size_x; i++){
+			for (int j=size_y-y; j<size_y; j++){
+				map[i][j]=kEmpty;
+				location_attractivness[i][j]=0;
+			}
+		}
+
+
+	}
+	else if (y>=0 && y<size_y-1){  //shift down
+		for (int i=0; i<size_x; i++){
+			for (int j=size_y-1; j-y>=0; j--){
+				map[i][j]=map[i][j-y];
+				location_attractivness[i][j]=location_attractivness[i][j-y];
+			}
+
+		}
+		for (int i=0; i<size_x; i++){
+			for(int j=0; j<y; j++){
+				map[i][j]=kEmpty;
+				location_attractivness[i][j]=0;
+			}
+		}
+	}
+	else {  //location has no overlap
+		printf("location has no y overlap\n");
+		for (int i=0; i<size_x; i++){
+			for (int j=0; j<size_y; j++){
+				map[i][j]=kEmpty;
+				location_attractivness[i][j]=0;
+			}
+		}
+	}
+
+	map_corners[0]=map_corners[0]+x; 
+	map_corners[1]=map_corners[1]+x;
+	map_corners[2]=map_corners[2]+y;
+	map_corners[3]=map_corners[3]+y;
+
 }
 
 void Data_Store::recieve_vision(char * vision_array){
@@ -213,7 +317,7 @@ void Data_Store::print_map(){
 		for (int x=0; x<size_x; x++){
 			
 			if (x!=location_values[0] || y!=location_values[1]){
-				printf("%d ",(int)(map[x][y]));
+				printf("%c ",(map[x][y]));
 			}
 			else {
 				printf("%c ",kSelf);
@@ -238,7 +342,7 @@ void Data_Store::print_vision(){
 void Data_Store::print_location_attractivness(){
 	for (int y=0; y<size_y; y++){
 		for (int x=0; x<size_x; x++){
-			printf("%1.1lf ", location_attractivness[x][y]);
+			printf("%2.0lf ", location_attractivness[x][y]);
 		}
 		printf("\n");
 	}

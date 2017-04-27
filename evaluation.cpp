@@ -165,7 +165,7 @@ void Evaluation::shortest_path(){
 	map_copy[d->location_values[0]][d->location_values[1]]=0;
 	map_copy[x_loc][y_loc]=1;	
 	max=1;
-	while (map_copy[d->location_values[0]][d->location_values[1]] <= 0){//find shortest path
+	while (map_copy[d->location_values[0]][d->location_values[1]] <= 0 && max < (2*d->size_x)){//find shortest path
 		
 		/*for (int y =0; y<d->size_y; y++){
 			for (int x =0; x<d->size_x; x++){
@@ -209,6 +209,10 @@ void Evaluation::shortest_path(){
 			}
 		}
 		max++;
+	}
+	if (max>=(d->size_x)*2){
+		printf("move not found\n");
+
 	}
 
 	

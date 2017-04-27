@@ -76,11 +76,12 @@ class Data_Store {
 		
 		void update_map(); //creates a new map from the composition of map and vision, generates new diff, and replaces map with update_map
 		void update_results(double result);  //updated the results of a move
-		
+		void shift_map(int x, int y);
 		void print_map();
 		void print_vision();
 		void print_points_values();
 		void print_location_attractivness();
+	
 		
 
 

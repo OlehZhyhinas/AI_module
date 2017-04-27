@@ -55,8 +55,12 @@ void AI::get_move(){
 			m->calculate_all_attractivness();
 			//printf("atract\n");
 			//d->print_map();
+			//d->shift_map(-1, -1);
 		}
 	}
+	d->shift_map(1, 0);
+	d->print_map();
+	d->print_location_attractivness();
 	e->d = d;
 	e->next_move();
 	//printf("move\n");

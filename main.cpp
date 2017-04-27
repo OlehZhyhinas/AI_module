@@ -5,7 +5,7 @@
 #include "stdlib.h"
 #include <unistd.h>
 
-#define dimensions 300
+#define dimensions 40
 
 std::vector< std::vector<char> > field;
 std::vector<int> number_of_moves;
@@ -122,7 +122,7 @@ int main (void){
 	}*/
 
 
-	for (int i=0; i<10; i++){
+	/*for (int i=0; i<10; i++){
 		AI a;
 		a.initialize_data_store(dimensions,dimensions,0,0,5);
 		a.initialize_results();
@@ -151,7 +151,7 @@ int main (void){
 		a.~AI();
 		
 		
-	}
+	}*/
 	for (int i=0; i<10; i++){
 		AI a;
 		a.initialize_data_store(dimensions,dimensions,0,0,5);
@@ -159,7 +159,7 @@ int main (void){
 		a.initialize_mod_master();
 		a.initialize_evaluation();
 		a.launch_window();
-		a.set_points_values(-1100,0,50);
+		a.set_points_values(-1,0,1);
 		a.set_destination(rand()%(dimensions-5)+2, rand()%(dimensions-5)+2);
 		a.set_location(rand()%(dimensions-5)+2, rand()%(dimensions-5)+2);
 		printf("running AI # %d\n", i);
